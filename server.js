@@ -1,4 +1,6 @@
 require("dotenv").config();
+const appointmentRoutes = require('./appointmentRoute');
+
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -10,15 +12,8 @@ const port = process.env.PORT || 4040;
 
 app.use(bodyParser.json());
 
-app.post('/appointments', async (req, res) => {
-    try {
-        const appointment = req.body;
-        const docRef = await db.collection('appointments').add(appointment);
-        res.status(201).send(`Appointment created with ID: ${docRef.id}`)
-    } catch (error) {
-        res.status(400).send('Error creating appointment ' + error.message)
-    }
-})
+app.use('/appointments', appointmentRoutes);
+
 
 app.listen(port, () => {
   console.log(`Server is running on ${port}`);
